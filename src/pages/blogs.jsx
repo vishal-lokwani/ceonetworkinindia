@@ -11,7 +11,7 @@ export function Blogs() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch("http://localhost:5021/blog");
+        const response = await fetch("https://ceo.apis.stageprojects.xyz/blog");
         const result = await response.json();
         if (result.success) {
           setBlogs(result.data);

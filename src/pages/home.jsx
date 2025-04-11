@@ -28,7 +28,7 @@ export function Home() {
   useEffect(() => {
     const fetchHomepageData = async () => {
       try {
-        const response = await axios.get("http://localhost:5021/homepage");
+        const response = await axios.get("https://ceo.apis.stageprojects.xyz/homepage");
         const homepage = response.data.data?.[0] || {};
   
         const {
@@ -56,7 +56,7 @@ export function Home() {
 useEffect(() => {
   const fetchCEOs = async () => {
     try {
-      const response = await axios.get("http://localhost:5021/ceo");
+      const response = await axios.get("https://ceo.apis.stageprojects.xyz/ceo");
       const ceos = response.data.data;
 
       const transformedData = ceos.map((ceo) => ({

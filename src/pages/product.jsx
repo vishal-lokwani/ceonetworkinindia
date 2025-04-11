@@ -13,7 +13,7 @@ export function Product() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:5021/product");
+        const response = await fetch("https://ceo.apis.stageprojects.xyz/product");
         const result = await response.json();
         console.log('res',result)
         if (result.success) {

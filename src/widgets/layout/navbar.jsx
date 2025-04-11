@@ -243,7 +243,7 @@ export function Navbar({ brandName, routes, action }) {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:5021/ceo`)
+    fetch(`https://ceo.apis.stageprojects.xyz/ceo`)
       .then((response) => response.json())
       .then((data) => {
         setCeoList(data.data);
