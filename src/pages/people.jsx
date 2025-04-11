@@ -11,7 +11,7 @@ export function People() {
   useEffect(() => {
     const fetchCEOs = async () => {
       try {
-        const response = await fetch("http://localhost:5021/ceo");
+        const response = await fetch("https://ceo.apis.stageprojects.xyz/ceo");
         const result = await response.json();
         if (result.success) {
           setCeos(result.data);

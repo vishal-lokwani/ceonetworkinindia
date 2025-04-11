@@ -20,7 +20,7 @@ export function SignIn() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5021/ceo/login", {
+      const res = await axios.post("https://ceo.apis.stageprojects.xyz/ceo/login", {
         email,
         password,
       });

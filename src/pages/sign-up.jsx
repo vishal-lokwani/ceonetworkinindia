@@ -29,7 +29,7 @@ export function SignUp() {
     e.preventDefault();
 console.log('hii')
     try {
-      const res = await axios.post("http://localhost:5021/ceo/register", formData);
+      const res = await axios.post("https://ceo.apis.stageprojects.xyz/ceo/register", formData);
 console.log('res',res)
       if (res.data.success) {
         toast.success("Registration Successful!");

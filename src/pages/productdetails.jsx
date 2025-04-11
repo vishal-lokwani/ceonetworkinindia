@@ -14,7 +14,7 @@ export function ProductDetails() {
     const fetchProduct = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`http://localhost:5021/product/${productId}`);
+        const response = await fetch(`https://ceo.apis.stageprojects.xyz/product/${productId}`);
         const result = await response.json();
         if (result.success) {
           setProductDetails(result.data);
