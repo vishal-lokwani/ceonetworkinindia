@@ -10,12 +10,12 @@ export function Description() {
   const [isLoading, setIsLoading] = useState(true); // State to handle the loading state
   const { ceoId } = useParams(); // Get the CEO ID from the URL
   const navigate = useNavigate();
-
+  const API_URL = import.meta.env.VITE_API_URL;
   useEffect(() => {
     const fetchDetails = async () => {
       try {
         setIsLoading(true); // Set loading to true when fetching new data
-        const response = await fetch(`https://ceo.apis.stageprojects.xyz/ceo/${ceoId}`); // Use the ceoId in the API URL
+        const response = await fetch(`${API_URL}ceo/${ceoId}`); // Use the ceoId in the API URL
         const result = await response.json();
         if (result.success) {
           setCeoDetails(result.data);
@@ -35,7 +35,7 @@ export function Description() {
   const handleSearch = async (searchTerm) => {
     try {
       setIsLoading(true); // Set loading to true when performing search
-      const response = await fetch(`https://ceo.apis.stageprojects.xyz/ceo/search?term=${searchTerm}`);
+      const response = await fetch(`${API_URL}ceo/search?term=${searchTerm}`);
       const result = await response.json();
       if (result.success) {
         setCeoDetails(result.data); // Update ceoDetails with the search result

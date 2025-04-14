@@ -7,11 +7,11 @@ import { useNavigate } from "react-router-dom"; // Import the useNavigate hook
 export function People() {
   const [ceos, setCeos] = useState([]);
   const navigate = useNavigate(); // Initialize the useNavigate hook
-
+  const API_URL = import.meta.env.VITE_API_URL;
   useEffect(() => {
     const fetchCEOs = async () => {
       try {
-        const response = await fetch("https://ceo.apis.stageprojects.xyz/ceo");
+        const response = await fetch(`${API_URL}ceo`);
         const result = await response.json();
         if (result.success) {
           setCeos(result.data);

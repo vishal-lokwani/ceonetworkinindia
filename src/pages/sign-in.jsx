@@ -16,29 +16,38 @@ export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("https://ceo.apis.stageprojects.xyz/ceo/login", {
+      const res = await axios.post(`${API_URL}ceo/login`, {
         email,
         password,
       });
-
+    
+      console.log("Full Response:", res.data.data);
+    
       if (res.data.success) {
         toast.success("Login successful");
+    
+        console.log("Storing token:", res.data.data.token);
+    
         localStorage.setItem("token", res.data.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.data));
+    
         setTimeout(() => {
           navigate("/home");
-        }, 1500); // Delay to let user see the toast
+        }, 1500);
       }
     } catch (error) {
-      console.error("Login error:", error);
+      console.log("Login Error:", error.response);
       toast.error(
         error.response?.data?.message ||
-          "Something went wrong during login."
+        "Something went wrong during login."
       );
     }
+    
   };
   return (
     <>

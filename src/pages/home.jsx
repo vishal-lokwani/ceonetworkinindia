@@ -19,44 +19,35 @@ import axios from "axios";
 
 export function Home() {
   const [teamData, setTeamData] = useState([]);
+  const API_URL = import.meta.env.VITE_API_URL;
   const [homepageData, setHomepageData] = useState({
     desktopBanner: "/img/background-3.png", // change from backgroundImage to desktopBanner
     title: "",
     description: "",
   });
   
-  useEffect(() => {
-    const fetchHomepageData = async () => {
-      try {
-        const response = await axios.get("https://ceo.apis.stageprojects.xyz/homepage");
-        const homepage = response.data.data?.[0] || {};
-  
-        const {
-          desktopBanner = "/img/background-3.png",
-          title = "Default Title",
-          description = "Default Description",
-        } = homepage;
-  
-        setHomepageData({
-          desktopBanner: desktopBanner,
-          title,
-          description,
-        });
-  
-      } catch (err) {
-        console.error("Failed to fetch homepage data:", err);
-      }
-    };
-  
-    fetchHomepageData();
-  }, []);
-  
-  
-  
+  const handleUpdate = () => {
+    fetch(`${API_URL}ceo/${ceoDetails._id}`, {
+      method: "PUT",
+      body: JSON.stringify(formData)
+    })
+      .then(response => response.json())
+      .then(result => {
+        if (result.success) {
+          setCeoDetails(result.data);
+          setOpen(false);
+        } else {
+          alert("Update failed!");
+        }
+      })
+      .catch(error => {
+        console.log("Error updating CEO:", error);
+      });
+  };
 useEffect(() => {
   const fetchCEOs = async () => {
     try {
-      const response = await axios.get("https://ceo.apis.stageprojects.xyz/ceo");
+      const response = await axios.get(`${API_URL}ceo`);
       const ceos = response.data.data;
 
       const transformedData = ceos.map((ceo) => ({

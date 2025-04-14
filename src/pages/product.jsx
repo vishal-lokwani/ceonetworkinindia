@@ -9,11 +9,11 @@ export function Product() {
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(10);
   const navigate = useNavigate();
-
+  const API_URL = import.meta.env.VITE_API_URL;
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("https://ceo.apis.stageprojects.xyz/product");
+        const response = await fetch(`${API_URL}product`);
         const result = await response.json();
         console.log('res',result)
         if (result.success) {

@@ -9,12 +9,12 @@ export function ProductDetails() {
   const [productDetails, setProductDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { productId } = useParams();
-
+  const API_URL = import.meta.env.VITE_API_URL;
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`https://ceo.apis.stageprojects.xyz/product/${productId}`);
+        const response = await fetch(`${API_URL}product/${productId}`);
         const result = await response.json();
         if (result.success) {
           setProductDetails(result.data);
