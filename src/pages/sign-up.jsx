@@ -12,7 +12,7 @@ import { Footer } from "@/widgets/layout";
 
 export function SignUp() {
   const navigate = useNavigate();
-
+  const API_URL = import.meta.env.VITE_API_URL;
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -29,7 +29,7 @@ export function SignUp() {
     e.preventDefault();
 console.log('hii')
     try {
-      const res = await axios.post("https://ceo.apis.stageprojects.xyz/ceo/register", formData);
+      const res = await axios.post(`${API_URL}ceo/register`, formData);
 console.log('res',res)
       if (res.data.success) {
         toast.success("Registration Successful!");

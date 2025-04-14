@@ -5,13 +5,16 @@ import { useNavigate } from "react-router-dom";
 import { Tag, Layers } from "lucide-react";
 
 export function Blogs() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  
   const [blogs, setBlogs] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch("https://ceo.apis.stageprojects.xyz/blog");
+        const response = await fetch(`{$API_URL}blog`);
         const result = await response.json();
         if (result.success) {
           setBlogs(result.data);

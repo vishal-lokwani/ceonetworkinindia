@@ -206,9 +206,8 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { CircularProgress } from "@mui/material";
 
-export function Navbar({ brandName, routes, action }) {
+export function Navbar({ brandName = "MyApp", routes = [], action }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [openNav, setOpenNav] = useState(false);
@@ -216,76 +215,62 @@ export function Navbar({ brandName, routes, action }) {
   const [ceoList, setCeoList] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => window.innerWidth >= 960 && setOpenNav(false)
-    );
+  const isLoggedIn = !!localStorage.getItem("token");
 
-    return () => {
-      window.removeEventListener("resize", () => {});
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 960) setOpenNav(false);
     };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
-    // Close dropdown when clicking outside
     const handleClickOutside = (event) => {
-      if (!event.target.closest('.dropdown')) {
+      if (!event.target.closest(".dropdown")) {
         setIsDropdownOpen(false);
       }
     };
-    
-    window.addEventListener('click', handleClickOutside);
-    
-    return () => {
-      window.removeEventListener('click', handleClickOutside);
-    };
+    window.addEventListener("click", handleClickOutside);
+    return () => window.removeEventListener("click", handleClickOutside);
   }, []);
 
   useEffect(() => {
-    fetch(`https://ceo.apis.stageprojects.xyz/ceo`)
+    fetch(`http://localhost:5021/ceo`)
       .then((response) => response.json())
-      .then((data) => {
-        setCeoList(data.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching CEOs:", error);
-      });
+      .then((data) => setCeoList(data.data))
+      .catch((error) => console.error("Error fetching CEOs:", error));
   }, []);
 
   const handleSearchChange = (event) => {
     const value = event.target.value;
     setSearchText(value);
-    if (value === "") {
-      setIsDropdownOpen(false);
-    } else {
-      setIsDropdownOpen(true);
-    }
+    setIsDropdownOpen(value !== "");
   };
-  
+
   const handleDropdownClick = (ceo) => {
     closeDropdown();
-    setSearchText(""); // Clear the input
+    setSearchText("");
     navigate(`/description/${ceo._id}`);
   };
-  
 
-  const handleSearchFocus = () => {
-    setIsDropdownOpen(true);
-  };
+  const handleSearchFocus = () => setIsDropdownOpen(true);
+  const closeDropdown = () => setIsDropdownOpen(false);
 
- 
-  
-  const closeDropdown = () => {
-    setIsDropdownOpen(false);
-  };
-  
-
- 
+  const filteredRoutes = routes.filter((route) => {
+    const routeName = route?.name?.toLowerCase();
+    if (isLoggedIn && (routeName === "sign in" || routeName === "sign up")) {
+      return false;
+    }
+    if (!isLoggedIn && routeName === "account") {
+      return false;
+    }
+    return true;
+  });
 
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      {routes.map(({ name, path, icon, href, target }) => (
+      {filteredRoutes.map(({ name, path, icon, href, target }) => (
         <Typography
           key={name}
           as="li"
@@ -323,61 +308,34 @@ export function Navbar({ brandName, routes, action }) {
     </ul>
   );
 
+  const isAuthPage = pathname === "/sign-in" || pathname === "/sign-up";
+
   return (
     <MTNavbar color="transparent" className="p-3">
-      {pathname === '/sign-in' || pathname === '/sign-up' ? (
-        <div className="container mx-auto flex items-center justify-between text-black">
-          <Link to="/">
-          <Link to="/">
-  <img
-    src="/img/logo.png"
-    className="h-10 w-auto mr-4 ml-2 cursor-pointer"
-  />
-</Link>
+      <div
+        className={`container mx-auto flex items-center justify-between ${
+          isAuthPage ? "text-black" : "text-white"
+        }`}
+      >
+        <Link to="/">
+          <img
+            src="/img/logo.png"
+            className="h-10 w-auto mr-4 ml-2 cursor-pointer"
+            alt="logo"
+          />
+        </Link>
 
-          </Link>
-          <div className="hidden lg:block">{navList}</div>
-          <div className="hidden gap-2 lg:flex">
-          {action && React.cloneElement(action, {
-  className: "hidden lg:inline-block",
-})}
+        <div className="hidden lg:block">{navList}</div>
 
-          </div>
-          <IconButton
-            variant="text"
-            size="sm"
-            color="white"
-            className="ml-auto text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-            onClick={() => setOpenNav(!openNav)}
-          >
-            {openNav ? (
-              <XMarkIcon strokeWidth={2} className="h-6 w-6" />
-            ) : (
-              <Bars3Icon strokeWidth={2} className="h-6 w-6" />
-            )}
-          </IconButton>
-        </div>
-      ) : (
-        <div className="container mx-auto flex items-center justify-between text-white">
-          <Link to="/">
-          <Link to="/">
-  <img
-    src="/img/logo.png"
-    className="h-10 w-auto mr-4 ml-2 cursor-pointer"
-  />
-</Link>
-
-          </Link>
-          <div className="hidden lg:block">{navList}</div>
-          <div className="hidden gap-2 lg:flex">
+        <div className="hidden gap-2 lg:flex">
+          {!isAuthPage && (
             <div className="flex justify-between items-center mb-6 relative dropdown">
               <button className="absolute left-0 top-1/2 -translate-y-1/2">
                 <svg
-                  className="fill-body hover:fill-primary dark:fill-bodydark dark:hover:fill-primary"
+                  className="fill-body dark:fill-bodydark"
                   width="20"
                   height="20"
                   viewBox="0 0 20 20"
-                  fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
@@ -400,41 +358,63 @@ export function Navbar({ brandName, routes, action }) {
                 onChange={handleSearchChange}
                 className="w-full bg-transparent pl-9 pr-4 text-white focus:outline-none xl:w-125"
               />
-             {isDropdownOpen && searchText.trim() !== "" && (
-  <div className="absolute top-full left-0 mt-2 w-full bg-transparent shadow-lg rounded-lg z-10 border border-black-300">
-    <ul>
-      {ceoList
-        .filter((ceo) =>
-          ceo.name.toLowerCase().includes(searchText.toLowerCase())
-        )
-        .map((ceo) => (
-          <li
-            key={ceo._id}
-            className="px-4 py-2 text-black cursor-pointer"
-            onClick={() => handleDropdownClick(ceo)}
-          >
-            {ceo.name}
-          </li>
-        ))}
-      {ceoList.filter((ceo) =>
-        ceo.name.toLowerCase().includes(searchText.toLowerCase())
-      ).length === 0 && (
-        <li className="px-4 py-2 text-black">No results found</li>
-      )}
-    </ul>
-  </div>
-)}
-
+              {isDropdownOpen && searchText.trim() !== "" && (
+                <div className="absolute top-full left-0 mt-2 w-full bg-white shadow-lg rounded-lg z-10 border border-black-300">
+                  <ul>
+                    {ceoList
+                      .filter((ceo) =>
+                        ceo?.name
+                          ?.toLowerCase()
+                          .includes(searchText.toLowerCase())
+                      )
+                      .map((ceo) => (
+                        <li
+                          key={ceo._id}
+                          className="px-4 py-2 text-black cursor-pointer"
+                          onClick={() => handleDropdownClick(ceo)}
+                        >
+                          {ceo.name}
+                        </li>
+                      ))}
+                    {ceoList.filter((ceo) =>
+                      ceo?.name
+                        ?.toLowerCase()
+                        .includes(searchText.toLowerCase())
+                    ).length === 0 && (
+                      <li className="px-4 py-2 text-black">No results found</li>
+                    )}
+                  </ul>
+                </div>
+              )}
             </div>
-          </div>
+          )}
+
+          {action &&
+            React.cloneElement(action, {
+              className: "hidden lg:inline-block",
+            })}
         </div>
-      )}
+
+        <IconButton
+          variant="text"
+          size="sm"
+          color="white"
+          className="ml-auto text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+          onClick={() => setOpenNav(!openNav)}
+        >
+          {openNav ? (
+            <XMarkIcon strokeWidth={2} className="h-6 w-6" />
+          ) : (
+            <Bars3Icon strokeWidth={2} className="h-6 w-6" />
+          )}
+        </IconButton>
+      </div>
     </MTNavbar>
   );
 }
 
 Navbar.propTypes = {
-  brandName: PropTypes.string.isRequired,
+  brandName: PropTypes.string,
   routes: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
@@ -443,10 +423,9 @@ Navbar.propTypes = {
       href: PropTypes.string,
       target: PropTypes.string,
     })
-  ).isRequired,
+  ),
   action: PropTypes.node,
 };
-
 
 Navbar.displayName = "/src/widgets/layout/navbar.jsx";
 
