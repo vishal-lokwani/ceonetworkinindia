@@ -9,7 +9,7 @@ import { Footer } from "@/widgets/layout";
 export function Profile() {
   return (
     <>
-      <section className="relative block h-[10vh]">
+      <section className="relative block h-[12vh]">
         <div className="bg-profile-background absolute top-0 h-full w-full bg-[url('/img/thr.jpg')] bg-cover bg-center scale-105" />
         <div className="absolute top-0 h-full w-full bg-black/60 bg-cover bg-center" />
       </section>

@@ -2,6 +2,7 @@ import { Home, SignIn, SignUp, Blogs, People, Product } from "@/pages";
 import Description from "./pages/description";
 import ProductDetails from "./pages/productdetails";
 import Account from "./pages/account";
+import MYPRODUCTS from "./pages/myproducts";
 export const routes = [
   {
     // name: "home",
@@ -47,6 +48,11 @@ export const routes = [
     // name: "Description",
     path: "/description/:ceoId",
     element: <Description />,
+  },
+  {
+    // name: "Description",
+    path: "/myproducts",
+    element: <MYPRODUCTS/>,
   },
   {
     // name: "Description",

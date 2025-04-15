@@ -39,7 +39,7 @@ export function Product() {
 
   return (
     <>
-      <section className="relative block h-[10vh]">
+      <section className="relative block h-[12vh]">
         <div className="absolute top-0 h-full w-full bg-[url('/img/thr.jpg')] bg-cover bg-center scale-105" />
         <div className="absolute top-0 h-full w-full bg-black/60 flex items-center justify-center">
           {/* <Typography variant="h2" color="white" className="text-4xl font-bold">
