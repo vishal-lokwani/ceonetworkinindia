@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { Typography } from "@material-tailwind/react";
+import { Typography, Button } from "@material-tailwind/react";
 import { Footer } from "@/widgets/layout";
 import { useNavigate } from "react-router-dom";
 import { Tag, Layers } from "lucide-react";
 
 export function Blogs() {
-   const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL;
   const [blogs, setBlogs] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const blogsPerPage = 20;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,6 +27,18 @@ export function Blogs() {
     fetchBlogs();
   }, []);
 
+  // Pagination logic
+  const indexOfLastBlog = currentPage * blogsPerPage;
+  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
+  const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfLastBlog);
+  const totalPages = Math.ceil(blogs.length / blogsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
   return (
     <>
       <section className="relative block h-[12vh]">
@@ -38,22 +52,21 @@ export function Blogs() {
             All Blogs
           </Typography>
 
-          {blogs.length > 0 ? (
+          {currentBlogs.length > 0 ? (
             <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
-              {blogs.map((blog) => (
+              {currentBlogs.map((blog) => (
                 <div
                   key={blog._id}
                   onClick={() => navigate(`/blog/${blog._id}`)}
                   className="cursor-pointer group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-4"
                 >
-                <div className="overflow-hidden rounded-xl mt-[10px]">
-  <img
-    src={blog.coverimage || "/img/default.jpg"}
-    alt="cover"
-    className="h-52 w-full object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
-  />
-</div>
-
+                  <div className="overflow-hidden rounded-xl mt-[10px]">
+                    <img
+                      src={blog.coverimage || "/img/default.jpg"}
+                      alt="cover"
+                      className="h-52 w-full object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
 
                   <Typography
                     variant="h6"
@@ -83,6 +96,37 @@ export function Blogs() {
             </div>
           ) : (
             <p className="text-center text-gray-500">No blogs found.</p>
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center mt-8">
+              <div className="flex items-center bg-white shadow-md px-3 py-3 gap-2 min-w-[110px] justify-center">
+                <Button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  variant="text"
+                  className="text-gray-700 text-base font-bold p-0 min-w-0"
+                >
+                  &lt;
+                </Button>
+
+                <span className="text-sm font-medium text-gray-800">
+                  <span className="text-orange-500 font-bold">{currentPage}</span>
+                  <span className="mx-0.5">/</span>
+                  {totalPages}
+                </span>
+
+                <Button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  variant="text"
+                  className="text-gray-700 text-base font-bold p-0 min-w-0"
+                >
+                  &gt;
+                </Button>
+              </div>
+            </div>
           )}
         </div>
       </section>

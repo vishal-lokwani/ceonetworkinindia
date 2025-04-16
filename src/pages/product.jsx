@@ -2,20 +2,21 @@ import { useEffect, useState } from "react";
 import { Typography, Button } from "@material-tailwind/react";
 import { Footer } from "@/widgets/layout";
 import { useNavigate } from "react-router-dom";
-import { Tag, Layers } from "lucide-react";
+import { Layers } from "lucide-react";
 
 export function Product() {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(10);
+  const [productsPerPage] = useState(20);
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(`${API_URL}product`);
         const result = await response.json();
-        console.log('res',result)
+        console.log('res', result);
         if (result.success) {
           setProducts(result.data);
         }
@@ -34,7 +35,9 @@ export function Product() {
   const totalPages = Math.ceil(products.length / productsPerPage);
 
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
   };
 
   return (
@@ -97,20 +100,40 @@ export function Product() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex justify-center items-center mt-10 gap-2">
-              {[...Array(totalPages)].map((_, index) => (
-                <Button
-                  key={index}
-                  onClick={() => handlePageChange(index + 1)}
-                  variant={currentPage === index + 1 ? "filled" : "outlined"}
-                  color="blue"
-                  size="sm"
-                >
-                  {index + 1}
-                </Button>
-              ))}
-            </div>
-          )}
+  <div className="flex justify-center items-center mt-6">
+    <div className="flex items-center bg-white shadow-md  px-3 py-3 gap-2 min-w-[110px] justify-center">
+      <Button
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        variant="text"
+        className="text-gray-700 text-base font-bold p-0 min-w-0"
+      >
+        &lt;
+      </Button>
+
+      <span className="text-sm font-medium text-gray-800">
+        <span className="text-orange-500 font-bold">{currentPage}</span>
+        <span className="mx-0.5">/</span>
+        {totalPages}
+      </span>
+
+      <Button
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        variant="text"
+        className="text-gray-700 text-base font-bold p-0 min-w-0"
+      >
+        &gt;
+      </Button>
+    </div>
+  </div>
+)}
+
+
+          {/* Current page info */}
+          {/* <p className="text-gray-600 mt-4 text-sm text-center">
+            Page {currentPage} of {totalPages}
+          </p> */}
         </div>
       </section>
 

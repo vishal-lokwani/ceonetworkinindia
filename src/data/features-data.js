@@ -28,7 +28,9 @@
 
 // export default featuresData;
 import {
-  ChatBubbleBottomCenterTextIcon,
+  UserGroupIcon,
+  CubeIcon,
+  DocumentTextIcon,
 } from "@heroicons/react/24/solid";
 import axios from "axios";
 
@@ -45,19 +47,19 @@ export const featuresData = async () => {
       {
         color: "gray",
         title: "Total CEO's",
-        icon: ChatBubbleBottomCenterTextIcon,
+        icon: UserGroupIcon,
         description: `Total registered users: ${usersRes.data.data}`,
       },
       {
         color: "gray",
         title: "Total Products",
-        icon: ChatBubbleBottomCenterTextIcon,
+        icon:  CubeIcon,
         description: `Total products listed: ${productsRes.data.data}`,
       },
       {
         color: "gray",
         title: "Total Blogs",
-        icon: ChatBubbleBottomCenterTextIcon,
+        icon: DocumentTextIcon,
         description: `Total  blogs: ${blogsRes.data.data}`,
       },
     ];
@@ -67,19 +69,19 @@ export const featuresData = async () => {
       {
         color: "gray",
         title: "Total Users",
-        icon: ChatBubbleBottomCenterTextIcon,
+        icon: UserGroupIcon,
         description: `Unable to fetch users.`,
       },
       {
         color: "gray",
         title: "Total Products",
-        icon: ChatBubbleBottomCenterTextIcon,
+        icon: CubeIcon,
         description: `Unable to fetch products.`,
       },
       {
         color: "gray",
         title: "Total Blogs",
-        icon: ChatBubbleBottomCenterTextIcon,
+        icon: DocumentTextIcon,
         description: `Unable to fetch blogs.`,
       },
     ];

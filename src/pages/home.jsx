@@ -118,11 +118,7 @@ useEffect(() => {
 />
 
         <div className="absolute top-0 h-[85%] w-full bg-black bg-cover bg-center" />
-<<<<<<< HEAD
-        <div className="max-w-8xl container relative mx-auto">
-=======
         <div className="max-w-screen-xl container relative mx-auto">
->>>>>>> 66e34028ebebd5757e34a04129c219ec0dabd7a0
           <div className="flex flex-wrap items-center">
             <div className="ml-auto mr-auto w-full px-4 text-center lg:w-8/12">
             <Typography variant="h1" color="white" className="mb-6 font-black">
