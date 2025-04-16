@@ -109,14 +109,16 @@ useEffect(() => {
 
   return (
     <>
+    <div className="w-full min-h-screen overflow-x-hidden bg-white">
       <div className="relative flex h-screen content-center items-center justify-center pt-16 pb-32">
+      
       <div
   className="absolute top-0 h-[85%] w-full bg-cover bg-center"
   style={{ backgroundImage: `url(${homepageData.desktopBanner})` }}
 />
 
         <div className="absolute top-0 h-[85%] w-full bg-black bg-cover bg-center" />
-        <div className="max-w-8xl container relative mx-auto">
+        <div className="max-w-screen-xl container relative mx-auto">
           <div className="flex flex-wrap items-center">
             <div className="ml-auto mr-auto w-full px-4 text-center lg:w-8/12">
             <Typography variant="h1" color="white" className="mb-6 font-black">
@@ -377,6 +379,7 @@ useEffect(() => {
       </section>
       <div className="bg-white">
         <Footer />
+      </div>
       </div>
     </>
   );

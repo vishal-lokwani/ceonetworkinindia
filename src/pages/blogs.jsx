@@ -46,13 +46,14 @@ export function Blogs() {
                   onClick={() => navigate(`/blog/${blog._id}`)}
                   className="cursor-pointer group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-4"
                 >
-                  <div className="overflow-hidden rounded-xl">
-                    <img
-                      src={blog.coverimage || "/img/default.jpg"}
-                      alt="cover"
-                      className="h-52 w-full object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
+                <div className="overflow-hidden rounded-xl mt-[10px]">
+  <img
+    src={blog.coverimage || "/img/default.jpg"}
+    alt="cover"
+    className="h-52 w-full object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
+  />
+</div>
+
 
                   <Typography
                     variant="h6"

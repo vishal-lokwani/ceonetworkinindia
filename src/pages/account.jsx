@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import {
   Typography, Button, Dialog, DialogHeader, DialogBody,
@@ -87,13 +86,12 @@ export function Account() {
       setFormData({
         ...ceoDetails,
         industryType: ceoDetails.industryType || null,
-        products: ceoDetails.products ? ceoDetails.products.map(p => p._id) : [] // Safely access products
+        products: ceoDetails.products ? ceoDetails.products.map(p => p._id) : []
       });
       setImageFile(null);
     }
     setOpen(true);
   };
-  
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -177,95 +175,95 @@ export function Account() {
 
   return (
     <>
-      <section className="relative block h-[12vh]">
-        <div className="absolute top-0 h-full w-full bg-[url('/img/thr.jpg')] bg-cover bg-center scale-105" />
-        <div className="absolute top-0 h-full w-full bg-black/60" />
-      </section>
-
-      <section className="relative bg-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="flex gap-8">
-            <div className="w-1/4 bg-white p-6 shadow-lg rounded-lg mt-5">
-              <div className="space-y-6">
-                <Button onClick={() => navigate("/account")} fullWidth className="bg-black text-white">
-                  My Profile
-                </Button>
-                <Button onClick={() => navigate("/myproducts")} fullWidth className="bg-black text-white">
-                  My Products
-                </Button>
+      <div className="min-h-screen bg-white overflow-x-hidden w-full">
+        <section className="relative block h-[12vh]">
+          <div className="absolute top-0 h-full w-full bg-[url('/img/thr.jpg')] bg-cover bg-center scale-105" />
+          <div className="absolute top-0 h-full w-full bg-black/60" />
+        </section>
+        <section className="relative bg-white py-16">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col lg:flex-row gap-8">
+              <div className="w-full lg:w-1/4 bg-white p-6 shadow-lg rounded-lg mt-5">
+                <div className="space-y-6">
+                  <Button onClick={() => navigate("/account")} fullWidth className="bg-black text-white">
+                    My Profile
+                  </Button>
+                  <Button onClick={() => navigate("/myproducts")} fullWidth className="bg-black text-white">
+                    My Products
+                  </Button>
+                </div>
               </div>
-            </div>
 
-            <div className="w-3/4 bg-white p-6 shadow-lg rounded-lg">
-              <Typography variant="h5" className="font-semibold">My Profile</Typography>
-              <div className="mt-4">
-                <div className="flex gap-4 items-center">
-                  {ceoDetails.image ? (
-                    <img src={ceoDetails.image} alt={ceoDetails.name} className="w-24 h-24 rounded-full object-cover" />
-                  ) : (
-                    <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center text-gray-600">No Photo</div>
-                  )}
-                  <div>
-                    <Typography variant="h6" className="font-semibold">{ceoDetails.name}</Typography>
-                    <p className="text-sm text-gray-600">{ceoDetails.position}</p>
-                    <p className="text-sm text-gray-500">{ceoDetails.companyName}</p>
+              <div className="w-full lg:w-3/4 bg-white p-6 shadow-lg rounded-lg">
+                <Typography variant="h5" className="font-semibold">My Profile</Typography>
+                <div className="mt-4">
+                  <div className="flex gap-4 items-center flex-wrap">
+                    {ceoDetails.image ? (
+                      <img src={ceoDetails.image} alt={ceoDetails.name} className="w-24 h-24 rounded-full object-cover max-w-full" />
+                    ) : (
+                      <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center text-gray-600">No Photo</div>
+                    )}
+                    <div>
+                      <Typography variant="h6" className="font-semibold">{ceoDetails.name}</Typography>
+                      <p className="text-sm text-gray-600">{ceoDetails.position}</p>
+                      <p className="text-sm text-gray-500">{ceoDetails.companyName}</p>
+                    </div>
+                  </div>
+                  <div className="mt-4 space-y-1">
+                    <p><strong>Email:</strong> {ceoDetails.email}</p>
+                    <p><strong>LinkedIn:</strong> <a href={ceoDetails.linkedInUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600">{ceoDetails.linkedInUrl}</a></p>
+                    <p><strong>Industry:</strong> {ceoDetails.industryType?.name}</p>
+                  </div>
+                  <div className="flex gap-x-4 mt-4 flex-wrap">
+                    <Button onClick={handleDialogOpen} color="blue">Edit Profile</Button>
+                    <Button onClick={handleLogout} color="red">Logout</Button>
                   </div>
                 </div>
-                <div className="mt-4">
-                  <p><strong>Email:</strong> {ceoDetails.email}</p>
-                  <p><strong>LinkedIn:</strong> <a href={ceoDetails.linkedInUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600">{ceoDetails.linkedInUrl}</a></p>
-                  <p><strong>Industry:</strong> {ceoDetails.industryType?.name}</p>
-                </div>
-                <div className="flex gap-x-4 mt-4">
-  <Button onClick={handleDialogOpen} color="blue">Edit Profile</Button>
-  <Button onClick={handleLogout} color="red">Logout</Button>
-</div>
-
               </div>
             </div>
           </div>
+        </section>
+
+        <ToastContainer />
+        <div className="bg-white">
+          <Footer />
         </div>
-      </section>
 
-      <ToastContainer />
-      <div className="bg-white">
-        <Footer />
+        <Dialog open={open} handler={() => setOpen(!open)}>
+          <DialogHeader>Edit CEO Details</DialogHeader>
+          <DialogBody className="max-h-[500px] overflow-y-auto">
+            <div className="space-y-4">
+              <Input label="Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
+              <Input label="Email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+              <Input label="LinkedIn URL" value={formData.linkedInUrl} onChange={(e) => setFormData({ ...formData, linkedInUrl: e.target.value })} />
+              <Input label="Position" value={formData.position} onChange={(e) => setFormData({ ...formData, position: e.target.value })} />
+              <Input label="Company Name" value={formData.companyName} onChange={(e) => setFormData({ ...formData, companyName: e.target.value })} />
+              <Textarea label="Description" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
+
+              <Select label="Industry" value={formData.industryType?._id || ""} onChange={(val) => setFormData({ ...formData, industryType: categories.find(cat => cat._id === val) })}>
+                {categories.map((category) => (
+                  <Option key={category._id} value={category._id}>
+                    {category.name}
+                  </Option>
+                ))}
+              </Select>
+
+              <SelectMulti
+                isMulti
+                options={productOptions}
+                value={productOptions.filter(option => formData.products.includes(option.value))}
+                onChange={(selected) => setFormData({ ...formData, products: selected.map(s => s.value) })}
+              />
+
+              <Input type="file" onChange={handleFileChange} />
+            </div>
+          </DialogBody>
+          <DialogFooter>
+            <Button color="green" onClick={handleUpdate} className="mr-2">Save</Button>
+            <Button color="red" onClick={() => setOpen(false)}>Cancel</Button>
+          </DialogFooter>
+        </Dialog>
       </div>
-
-      <Dialog open={open} handler={() => setOpen(!open)}>
-        <DialogHeader>Edit CEO Details</DialogHeader>
-        <DialogBody className="max-h-[500px] overflow-y-auto">
-          <div className="space-y-4">
-            <Input label="Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
-            <Input label="Email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-            <Input label="LinkedIn URL" value={formData.linkedInUrl} onChange={(e) => setFormData({ ...formData, linkedInUrl: e.target.value })} />
-            <Input label="Position" value={formData.position} onChange={(e) => setFormData({ ...formData, position: e.target.value })} />
-            <Input label="Company Name" value={formData.companyName} onChange={(e) => setFormData({ ...formData, companyName: e.target.value })} />
-            <Textarea label="Description" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
-
-            <Select label="Industry" value={formData.industryType?._id || ""} onChange={(val) => setFormData({ ...formData, industryType: categories.find(cat => cat._id === val) })}>
-              {categories.map((category) => (
-                <Option key={category._id} value={category._id}>
-                  {category.name}
-                </Option>
-              ))}
-            </Select>
-
-            <SelectMulti
-              isMulti
-              options={productOptions}
-              value={productOptions.filter(option => formData.products.includes(option.value))}
-              onChange={(selected) => setFormData({ ...formData, products: selected.map(s => s.value) })}
-            />
-
-            <Input type="file" onChange={handleFileChange} />
-          </div>
-        </DialogBody>
-        <DialogFooter>
-          <Button color="green" onClick={handleUpdate} className="mr-2">Save</Button>
-          <Button color="red" onClick={() => setOpen(false)}>Cancel</Button>
-        </DialogFooter>
-      </Dialog>
     </>
   );
 }
