@@ -314,125 +314,117 @@ export function Navbar({ brandName = "MyApp", routes = [], action }) {
 
   return (
     <MTNavbar color="transparent" className="p-3">
-      <div
-        className={`container mx-auto flex items-center justify-between ${
-          isAuthPage ? "text-black" : "text-white"
-        }`}
-      >
-        <Link to="/">
-          <img
-            src="/img/logo.png"
-            className="h-12 w-auto mr-4 ml-2 cursor-pointer"
-            alt="logo"
-          />
-        </Link>
-
-        <div className="hidden lg:block">{navList}</div>
-
-        {/* Search Bar & Action */}
-        <div className="hidden gap-2 lg:flex items-center">
-        <div className="relative dropdown">
-  <button 
-    className="absolute left-0 top-1/2 -translate-y-1/2 pl-2 transition-transform duration-300 hover:scale-110"
-    style={{ borderRadius: '73px' }}
-  >
-    <svg
-      className="fill-white"
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M9.16666 3.33332C5.945 3.33332 3.33332 5.945 3.33332 9.16666C3.33332 12.3883 5.945 15 9.16666 15C12.3883 15 15 12.3883 15 9.16666C15 5.945 12.3883 3.33332 9.16666 3.33332ZM1.66666 9.16666C1.66666 5.02452 5.02452 1.66666 9.16666 1.66666C13.3088 1.66666 16.6667 5.02452 16.6667 9.16666C16.6667 13.3088 13.3088 16.6667 9.16666 16.6667C5.02452 16.6667 1.66666 13.3088 1.66666 9.16666Z"
+  <div className="container mx-auto flex items-center justify-between text-white">
+    <Link to="/">
+      <img
+        src="/img/logo.png"
+        className="h-12 w-auto mr-4 ml-2 cursor-pointer"
+        alt="logo"
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M13.2857 13.2857C13.6112 12.9603 14.1388 12.9603 14.4642 13.2857L18.0892 16.9107C18.4147 17.2362 18.4147 17.7638 18.0892 18.0892C17.7638 18.4147 17.2362 18.4147 16.9107 18.0892L13.2857 14.4642C12.9603 14.1388 12.9603 13.6112 13.2857 13.2857Z"
-      />
-    </svg>
-  </button>
-  <input
-    type="text"
-    placeholder="Search for CEOs..."
-    value={searchText}
-    onFocus={handleSearchFocus}
-    onChange={handleSearchChange}
-    className="
-      w-full xl:w-125 
-      bg-transparent 
-      pl-9 pr-4 py-2 
-      text-white 
-      border border-white 
-      focus:outline-none 
-      transition-all 
-      duration-300 
-      focus:border-blue-400 
-      focus:ring-2 
-      focus:ring-blue-400 
-      focus:shadow-lg 
-      placeholder:text-gray-300
-      hover:bg-white/10
-    "
-    style={{ borderRadius: '73px' }}
-  />
- 
-           
-            {isDropdownOpen && searchText.trim() !== "" && (
-              <div className="absolute top-full left-0 mt-2 w-full bg-white shadow-lg rounded-lg z-10 border border-gray-300">
-                <ul>
-                  {ceoList
-                    .filter((ceo) =>
-                      ceo?.name
-                        ?.toLowerCase()
-                        .includes(searchText.toLowerCase())
-                    )
-                    .map((ceo) => (
-                      <li
-                        key={ceo._id}
-                        className="px-4 py-2 text-black cursor-pointer"
-                        onClick={() => handleDropdownClick(ceo)}
-                      >
-                        {ceo.name}
-                      </li>
-                    ))}
-                  {ceoList.filter((ceo) =>
-                    ceo?.name
-                      ?.toLowerCase()
-                      .includes(searchText.toLowerCase())
-                  ).length === 0 && (
-                    <li className="px-4 py-2 text-black">No results found</li>
-                  )}
-                </ul>
-              </div>
-            )}
-          </div>
+    </Link>
 
-          {action &&
-            React.cloneElement(action, {
-              className: "hidden lg:inline-block",
-            })}
-        </div>
+    <div className="hidden lg:block">{navList}</div>
 
-        {/* Mobile Menu Icon */}
-        <IconButton
-          variant="text"
-          size="sm"
-          color="white"
-          className="ml-auto text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-          onClick={() => setOpenNav(!openNav)}
+    {/* Search Bar & Action */}
+    <div className="hidden gap-2 lg:flex items-center">
+      <div className="relative dropdown">
+        <button 
+          className="absolute left-0 top-1/2 -translate-y-1/2 pl-2 transition-transform duration-300 hover:scale-110"
+          style={{ borderRadius: '73px' }}
         >
-          {openNav ? (
-            <XMarkIcon strokeWidth={2} className="h-6 w-6" />
-          ) : (
-            <Bars3Icon strokeWidth={2} className="h-6 w-6" />
-          )}
-        </IconButton>
+          <svg
+            className="fill-white"
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M9.16666 3.33332C5.945 3.33332 3.33332 5.945 3.33332 9.16666C3.33332 12.3883 5.945 15 9.16666 15C12.3883 15 15 12.3883 15 9.16666C15 5.945 12.3883 3.33332 9.16666 3.33332ZM1.66666 9.16666C1.66666 5.02452 5.02452 1.66666 9.16666 1.66666C13.3088 1.66666 16.6667 5.02452 16.6667 9.16666C16.6667 13.3088 13.3088 16.6667 9.16666 16.6667C5.02452 16.6667 1.66666 13.3088 1.66666 9.16666Z"
+            />
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M13.2857 13.2857C13.6112 12.9603 14.1388 12.9603 14.4642 13.2857L18.0892 16.9107C18.4147 17.2362 18.4147 17.7638 18.0892 18.0892C17.7638 18.4147 17.2362 18.4147 16.9107 18.0892L13.2857 14.4642C12.9603 14.1388 12.9603 13.6112 13.2857 13.2857Z"
+            />
+          </svg>
+        </button>
+        <input
+          type="text"
+          placeholder="Search for CEOs..."
+          value={searchText}
+          onFocus={handleSearchFocus}
+          onChange={handleSearchChange}
+          className="
+            w-full xl:w-125 
+            bg-transparent 
+            pl-9 pr-4 py-2 
+            text-white 
+            border border-white 
+            focus:outline-none 
+            transition-all 
+            duration-300 
+            focus:border-blue-400 
+            focus:ring-2 
+            focus:ring-blue-400 
+            focus:shadow-lg 
+            placeholder:text-gray-300
+            hover:bg-white/10
+          "
+          style={{ borderRadius: '73px' }}
+        />
+          
+        {isDropdownOpen && searchText.trim() !== "" && (
+          <div className="absolute top-full left-0 mt-2 w-full bg-white shadow-lg rounded-lg z-10 border border-gray-300">
+            <ul>
+              {ceoList
+                .filter((ceo) =>
+                  ceo?.name?.toLowerCase().includes(searchText.toLowerCase())
+                )
+                .map((ceo) => (
+                  <li
+                    key={ceo._id}
+                    className="px-4 py-2 text-black cursor-pointer"
+                    onClick={() => handleDropdownClick(ceo)}
+                  >
+                    {ceo.name}
+                  </li>
+                ))}
+              {ceoList.filter((ceo) =>
+                ceo?.name?.toLowerCase().includes(searchText.toLowerCase())
+              ).length === 0 && (
+                <li className="px-4 py-2 text-black">No results found</li>
+              )}
+            </ul>
+          </div>
+        )}
       </div>
-    </MTNavbar>
+
+      {action &&
+        React.cloneElement(action, {
+          className: "hidden lg:inline-block",
+        })}
+    </div>
+
+    {/* Mobile Menu Icon */}
+    <IconButton
+      variant="text"
+      size="sm"
+      color="white"
+      className="ml-auto text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+      onClick={() => setOpenNav(!openNav)}
+    >
+      {openNav ? (
+        <XMarkIcon strokeWidth={2} className="h-6 w-6" />
+      ) : (
+        <Bars3Icon strokeWidth={2} className="h-6 w-6" />
+      )}
+    </IconButton>
+  </div>
+</MTNavbar>
+
   );
 }
 
