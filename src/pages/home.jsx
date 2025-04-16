@@ -21,7 +21,7 @@ export function Home() {
   const [teamData, setTeamData] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL;
   const [homepageData, setHomepageData] = useState({
-    desktopBanner: "", 
+    backgroundImage: "", 
     title: "",
     description: "",
   });
@@ -29,7 +29,7 @@ export function Home() {
     const fetchHomePageData = async () => {
       try {
         const response = await axios.get(`${API_URL}homepage`); // adjust endpoint
-        console.log('homepage',response.data.data)
+        console.log('homepage',response.data.data[0])
         setHomepageData(response.data.data[0]); // assuming blogs come in `data.data`
       } catch (err) {
         console.error("Failed to fetch homepage:", err);
@@ -114,10 +114,12 @@ useEffect(() => {
       
       <div
   className="absolute top-0 h-[85%] w-full bg-cover bg-center"
-  style={{ backgroundImage: `url(${homepageData.desktopBanner})` }}
+  style={{ backgroundImage: `url(${homepageData.
+desktopBanner
+})` }}
 />
 
-        <div className="absolute top-0 h-[85%] w-full bg-black bg-cover bg-center" />
+        <div className="absolute top-0 h-[85%] w-full bg-cover bg-center" />
         <div className="max-w-screen-xl container relative mx-auto">
           <div className="flex flex-wrap items-center">
             <div className="ml-auto mr-auto w-full px-4 text-center lg:w-8/12">
