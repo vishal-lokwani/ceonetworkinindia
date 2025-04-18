@@ -1,8 +1,9 @@
 import { Home, SignIn, SignUp, Blogs, People, Product } from "@/pages";
 import Description from "./pages/description";
 import ProductDetails from "./pages/productdetails";
-import Account from "./pages/account";
+import MyAccount from "./pages/myaccount";
 import MYPRODUCTS from "./pages/myproducts";
+import BlogDetail from "./pages/blogdetail";
 export const routes = [
   {
     // name: "home",
@@ -20,7 +21,7 @@ export const routes = [
     element: <People />,
   },
   {
-    name: "Product",
+    name: "Products",
     path: "/product",
     element: <Product />,
   },
@@ -30,9 +31,9 @@ export const routes = [
     element: <Blogs />,
   },
   {
-    name: "Account",
+    name: "MyAccount",
     path: "/account",
-    element: <Account />,
+    element: <MyAccount />,
   },
   {
     name: "Sign In",
@@ -48,6 +49,11 @@ export const routes = [
     // name: "Description",
     path: "/description/:ceoId",
     element: <Description />,
+  },
+  {
+    // name: "Description",
+    path: "/blog/:blogId",
+    element: <BlogDetail />,
   },
   {
     // name: "Description",

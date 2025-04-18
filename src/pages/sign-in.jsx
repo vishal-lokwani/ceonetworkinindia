@@ -66,7 +66,7 @@ export function SignIn() {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify({ ceo: res.data.data, token: res.data.token }));
 
-        navigate("/account");
+        navigate("/home");
       }
     } catch (error) {
       console.error("Google login error", error);
@@ -76,9 +76,9 @@ export function SignIn() {
 
   return (
     <>
-       <section className="relative block h-[12vh]">
-        <div className="absolute top-0 h-full w-full bg-[url('/img/thr.jpg')] bg-cover bg-center scale-105" />
-        <div className="absolute top-0 h-full w-full bg-black/60 flex items-center justify-center">
+       <section className="relative block h-[10vh]">
+        <div className="absolute top-0 h-full w-full bg-[#283850] bg-cover bg-center scale-105" />
+        <div className="absolute top-0 h-full w-full bg-[#283850]flex items-center justify-center">
           {/* <Typography variant="h2" color="white" className="text-4xl font-bold">
             Discover Our Products
           </Typography> */}

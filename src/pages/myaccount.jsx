@@ -10,8 +10,9 @@ import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import SelectMulti from 'react-select';
 import { toast, ToastContainer } from "react-toastify";
+import { FaUser, FaBoxOpen } from "react-icons/fa";
 
-export function Account() {
+export function MyAccount() {
   const [ceoDetails, setCeoDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
@@ -177,26 +178,42 @@ export function Account() {
   return (
     <>
       <div className="min-h-screen bg-white overflow-x-hidden w-full">
-        <section className="relative block h-[12vh]">
-          <div className="absolute top-0 h-full w-full bg-[url('/img/thr.jpg')] bg-cover bg-center scale-105" />
-          <div className="absolute top-0 h-full w-full bg-black/60" />
+        <section className="relative block h-[10vh]">
+          <div className="absolute top-0 h-full w-full bg-[#283850] bg-cover bg-center scale-105" />
+          <div className="absolute top-0 h-full w-full bg-[#283850]" />
         </section>
         <section className="relative bg-white py-16">
           <div className="container mx-auto px-4">
-            <div className="flex flex-col lg:flex-row gap-8">
-              <div className="w-full lg:w-1/4 bg-white p-6 shadow-lg rounded-lg mt-5">
-                <div className="space-y-6">
-                  <Button onClick={() => navigate("/account")} fullWidth className="bg-black text-white">
-                    My Profile
-                  </Button>
-                  <Button onClick={() => navigate("/myproducts")} fullWidth className="bg-black text-white">
-                    My Products
-                  </Button>
-                </div>
-              </div>
+           
+      <div className="flex items-center gap-6 px-6 py-4 text-black bg-white border-b">
+  <button
+    onClick={() => navigate("/account")}
+    className={`flex items-center gap-2 px-3 py-1 rounded-md font-medium transition ${
+      location.pathname === "/account"
+        ? "bg-[#283850] text-white"
+        : "hover:bg-gray-100 text-gray-700"
+    }`}
+  >
+    <FaUser />
+    My Profile
+  </button>
 
-              <div className="w-full lg:w-3/4 bg-white p-6 shadow-lg rounded-lg">
-                <Typography variant="h5" className="font-semibold">My Profile</Typography>
+  <button
+    onClick={() => navigate("/myproducts")}
+    className={`flex items-center gap-2 px-3 py-1 rounded-md font-medium transition ${
+      location.pathname === "/myproducts"
+        ? "bg-[#283850] text-white"
+        : "hover:bg-gray-100 text-gray-700"
+    }`}
+  >
+    <FaBoxOpen />
+    My Products
+  </button>
+</div>
+
+
+              <div className="w-full bg-white p-6 shadow-lg rounded-lg">
+  <Typography variant="h5" className="font-semibold">My Profile</Typography>
                 <div className="mt-4">
                   <div className="flex gap-4 items-center flex-wrap">
                     {ceoDetails.image ? (
@@ -222,7 +239,7 @@ export function Account() {
                 </div>
               </div>
             </div>
-          </div>
+        
         </section>
 
         <ToastContainer />
@@ -269,4 +286,4 @@ export function Account() {
   );
 }
 
-export default Account;
+export default MyAccount;

@@ -5,25 +5,27 @@ import {
   Typography,
   IconButton,
 } from "@material-tailwind/react";
+import CountUp from "react-countup";
 
 export function FeatureCard({ color, icon, title, description }) {
   return (
     <Card className="rounded-lg shadow-lg shadow-gray-500/10">
-      <CardBody className="px-8 text-center">
+      <CardBody className="px-8 text-center flex flex-col items-center">
         <IconButton
           variant="gradient"
           size="lg"
           color={color}
-          className="pointer-events-none mb-6 rounded-full"
+          className="pointer-events-none mb-4 rounded-full"
         >
           {icon}
         </IconButton>
-        <Typography variant="h5" className="mb-2" color="blue-gray">
+        <Typography variant="h4"  style={{ color: "rgb(0 72 130)" }} className="font-bold mb-1">
+          <CountUp end={description} duration={2} separator="," prefix="+" />
+        </Typography>
+        <Typography variant="h6" className="font-medium text-black">
           {title}
         </Typography>
-        <Typography className="font-normal text-blue-gray-600">
-          {description}
-        </Typography>
+       
       </CardBody>
     </Card>
   );
@@ -57,7 +59,7 @@ FeatureCard.propTypes = {
   ]),
   icon: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
-  description: PropTypes.node.isRequired,
+  description: PropTypes.number.isRequired,
 };
 
 FeatureCard.displayName = "/src/widgets/layout/feature-card.jsx";

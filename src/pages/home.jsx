@@ -16,6 +16,8 @@ import { FeatureCard, TeamCard } from "@/widgets/cards";
 import { featuresData,  contactData } from "@/data";
 import  { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export function Home() {
   const [teamData, setTeamData] = useState([]);
@@ -107,28 +109,63 @@ useEffect(() => {
   fetchBlogs();
 }, []);
 
+
+const [products, setProducts] = useState([]);
+
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(`${API_URL}product`); // adjust endpoint
+      console.log('pro',response.data.data)
+      setProducts(response.data.data); // assuming blogs come in `data.data`
+    } catch (err) {
+      console.error("Failed to fetch blogs:", err);
+    }
+  };
+
+  fetchProducts();
+}, []);
+
   return (
     <>
     <div className="w-full min-h-screen overflow-x-hidden bg-white">
       <div className="relative flex h-screen content-center items-center justify-center pt-16 pb-32">
       
-      <div
+      {/* <div
   className="absolute top-0 h-[85%] w-full bg-cover bg-center"
   style={{ backgroundImage: `url(${homepageData.
 desktopBanner
 })` }}
-/>
+/> */}
+<div className="absolute top-0 h-[85%] w-full bg-cover bg-center">
+  <iframe
+    className="w-full h-full object-cover z-0"
+    src="https://www.youtube.com/embed/gXFATcwrO-U?autoplay=1&loop=1&mute=1&playlist=gXFATcwrO-U&controls=0&modestbranding=1&rel=0&showinfo=0"
+    frameBorder="0"
+    allow="autoplay; fullscreen"
+    allowFullScreen
+  ></iframe>
+</div>
+
+
+
 
         <div className="absolute top-0 h-[85%] w-full bg-cover bg-center" />
         <div className="max-w-screen-xl container relative mx-auto">
           <div className="flex flex-wrap items-center">
             <div className="ml-auto mr-auto w-full px-4 text-center lg:w-8/12">
+            <motion.div
+  initial={{ opacity: 0, x: -100 }} 
+  animate={{ opacity: 1, x: 0 }}
+  transition={{ duration: 2, ease: "easeOut" }}
+>
             <Typography variant="h1" color="white" className="mb-6 font-black">
   {homepageData.title}
 </Typography>
 <Typography variant="lead" color="white" className="opacity-80">
   {homepageData.description}
 </Typography>
+</motion.div>
 
             </div>
           </div>
@@ -136,107 +173,72 @@ desktopBanner
       </div>
       <section className="-mt-54 bg-white px-4 pt-4">
 
-        <div className="container mx-auto">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {features.map(({ color, title, icon, description }) => (
-        <FeatureCard
-          key={title}
-          color={color}
-          title={title}
-          icon={React.createElement(icon, {
-            className: "w-5 h-5 text-white",
-          })}
-          description={description}
-        />
-      ))}
+        <div className="container mx-auto ">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 ">
+  {features.map(({ color, title, icon, description }) => (
+    <FeatureCard
+      key={title}
+      color={color}
+      title={title}
+      icon={React.createElement(icon, {
+        className: "w-5 h-5 text-white ",
+      })}
+      description={description}
+    />
+  ))}
+</div>
+
+<section className="flex flex-col mt-[10vh] md:flex-row">
+  {/* Text Card */}
+  <motion.div
+  className="w-full md:w-1/2 flex items-center justify-end px-10 py-12 bg-gray-50"
+  initial={{ opacity: 0, y: 100 }} // Start from below
+  whileInView={{ opacity: 1, y: 0 }} // Animate to its normal position
+  transition={{ duration: 3, ease: "easeOut" }}
+  viewport={{ once: true, amount: "top" }} // Trigger only once when 20% of the element is in view
+>
+    <div className="max-w-md">
+      <h2 className="text-4xl font-bold mb-6 text-[rgb(0,72,130)]">Who We Are</h2>
+      <p className="text-lg text-black leading-relaxed">
+        CEO Network India is an exclusive business network that brings together CEOs, entrepreneurs, and business leaders from various industries to share knowledge, ideas, and resources. It is a part of the global CEO Clubs Worldwide, which has a presence in more than 10 countries.
+      </p>
     </div>
-          <div className="mt-32 flex flex-wrap items-center">
-            <div className="mx-auto -mt-8 w-full px-4 md:w-5/12">
-              <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-blue-gray-900 p-2 text-center shadow-lg">
-                <FingerPrintIcon className="h-8 w-8 text-white " />
-              </div>
-              <Typography
-                variant="h3"
-                className="mb-3 font-bold"
-                color="blue-gray"
-              >
-                Working with us is a pleasure
-              </Typography>
-              <Typography className="mb-8 font-normal text-blue-gray-500">
-                Don't let your uses guess by attaching tooltips and popoves to
-                any element. Just make sure you enable them first via
-                JavaScript.
-                <br />
-                <br />
-                The kit comes with three pre-built pages to help you get started
-                faster. You can change the text and images and you're good to
-                go. Just make sure you enable them first via JavaScript.
-              </Typography>
-              <Button variant="filled">read more</Button>
-            </div>
-            <div className="mx-auto mt-24 flex w-full justify-center px-4 md:w-4/12 lg:mt-0">
-              <Card className="shadow-lg border shadow-gray-500/10 rounded-lg">
-                <CardHeader floated={false} className="relative h-56">
-                  <img
-                    alt="Card Image"
-                    src="/img/teamwork.png"
-                    className="h-full w-full"
-                  />
-                </CardHeader>
-                <CardBody>
-                  <Typography variant="small" color="blue-gray" className="font-normal">Enterprise</Typography>
-                  <Typography
-                    variant="h5"
-                    color="blue-gray"
-                    className="mb-3 mt-2 font-bold"
-                  >
-                    Top Notch Services
-                  </Typography>
-                  <Typography className="font-normal text-blue-gray-500">
-                    The Arctic Ocean freezes every winter and much of the
-                    sea-ice then thaws every summer, and that process will
-                    continue whatever happens.
-                  </Typography>
-                </CardBody>
-              </Card>
-            </div>
-          </div>
+  </motion.div>
+
+  
+  <motion.div
+  className="w-full md:w-1/2 flex items-center justify-end px-10 py-12 bg-gray-50"
+  initial={{ opacity: 0, y: 100 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 3, ease: "easeOut" }}
+  viewport={{ once: true, amount: "top" }} 
+>
+    <img
+      src="/img/1.jpg"
+      alt="CEO Clubs"
+      className="w-full h-full object-contain"
+    />
+  </motion.div>
+</section>
         </div>
       </section>
       <section className="px-4 pt-20 ">
         <div className="container mx-auto">
-          <PageTitle section="Our Team" heading="Here are our heroes">
-            According to the National Oceanic and Atmospheric Administration,
-            Ted, Scambos, NSIDClead scentist, puts the potentially record
-            maximum.
+          {/* <PageTitle section="Our Team" heading="Here are our heroes">
+          Behind every successful movement is a team of passionate, forward-thinking leaders.
+           These are the trailblazers shaping India’s business future — CEOs, founders, strategists, and mentors who believe in the power of connection,
+            knowledge, and leadership excellence.
+
+
           </PageTitle>
-          {/* <div className="mt-24 grid grid-cols-1 gap-12 gap-x-24 md:grid-cols-2 xl:grid-cols-4">
-            {teamData.map(({ img, name, position, socials }) => (
-              <TeamCard
-                key={name}
-                img={img}
-                name={name}
-                position={position}
-                socials={
-                  <div className="flex items-center gap-2">
-                    {socials.map(({ color, name }) => (
-                      <IconButton key={name} color={color} variant="text">
-                        <i className={`fa-brands text-xl fa-${name}`} />
-                      </IconButton>
-                    ))}
-                  </div>
-                }
-              />
-            ))}
-          </div> */}
           <div className="mt-24 grid grid-cols-1 gap-12 gap-x-24 md:grid-cols-2 xl:grid-cols-4">
   {teamData.map(({ img, name, position, linkedinUrl, twitterUrl, githubUrl }) => {
-    // Transform URLs into an array
+  
     const socials = [
       { name: "linkedin", color: "blue", url: linkedinUrl },
       { name: "twitter", color: "light-blue", url: twitterUrl },
       { name: "github", color: "gray", url: githubUrl },
-    ]; // Only include valid ones
+    ];
 
     return (
       <TeamCard
@@ -263,86 +265,133 @@ desktopBanner
       />
     );
   })}
-</div>
+</div> */}
 
 
         </div>
       </section>
-      <section className="relative bg-white py-24 px-2">
-        <div className="container mx-auto">
-          <PageTitle section="Co-Working" heading="Build something">
-            Put the potentially record low maximum sea ice extent tihs year down
-            to low ice. According to the National Oceanic and Atmospheric
-            Administration, Ted, Scambos.
-          </PageTitle>
-          <div className="mx-auto mt-20 mb-36 grid max-w-5xl grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3">
-            {contactData.map(({ title, icon, description }) => (
-              <Card
-                key={title}
-                color="transparent"
-                shadow={false}
-                className="text-center text-blue-gray-900"
-              >
-                <div className="mx-auto mb-6 grid h-14 w-14 place-items-center rounded-full bg-blue-gray-900 shadow-lg shadow-gray-500/20">
-                  {React.createElement(icon, {
-                    className: "w-5 h-5 text-white",
-                  })}
-                </div>
-                <Typography variant="h5" color="blue-gray" className="mb-2">
-                  {title}
-                </Typography>
-                <Typography className="font-normal text-blue-gray-500">
-                  {description}
-                </Typography>
-              </Card>
-            ))}
-          </div>
-          <section className="relative bg-white">
-  <div className="container mx-auto">
-    <PageTitle section="Our Blogs" heading="Latest Blog Articles">
-      Stay updated with insightful stories and updates from our team.
-    </PageTitle>
 
-    <div className="mx-auto mt-20  grid max-w-5xl grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3">
-      {blogs.map(({ _id, title, coverimage, description }) => (
-        <Card
-          key={_id}
-          className="shadow-md rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-        >
-          {/* Image with margin, padding, and rounded corners */}
-          <div className="p-4">
-            <img
-              src={coverimage || "/img/default-blog.jpg"}
-              alt={title}
-              className="h-40 w-full object-cover rounded-md"
-            />
-          </div>
 
-          <CardBody className="p-4 pt-0"> {/* Top padding removed to keep image tight */}
-            <Typography variant="h5" className="font-bold mb-2">
-              {title || "Untitled Blog"}
-            </Typography>
-            <Typography className="text-blue-gray-500 text-sm">
-              {description
-                ? description.replace(/<[^>]+>/g, "")
-                : "No description available."}
-            </Typography>
 
-            {/* Optional: Read More button */}
-            {/* <Button
-              variant="text"
-              color="blue"
-              className="mt-4"
-              onClick={() => window.location.href = `/blog/${_id}`}
-            >
-              Read More
-            </Button> */}
-          </CardBody>
-        </Card>
-      ))}
+      <section className=" py-24 px-2">
+  <div className="w-full max-w-7xl mx-auto bg-gray-50 rounded-xl shadow-md p-8">
+    <div className="flex justify-between items-center border-b pb-4">
+      <h2 className="text-2xl font-semibold text-[rgb(0,72,130)]">Latest Products</h2>
+      <Link to="/product" className="text-[#283850] text-sm hover:underline">View all</Link>
+    </div>
+
+    <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {products
+        .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+        .slice(0, 4)
+        .map(({ _id, name, coverImage, description, salePrice }, index) => (
+          <motion.div
+  key={_id}
+  initial={{ opacity: 0, y: 50 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5, delay: index * 0.1 }}
+  viewport={{ once: true, amount: 0.2 }}
+  className="bg-white rounded-xl border p-4 shadow-sm h-full flex flex-col justify-between"
+>
+  <Link to={`/product/${_id}`} className="h-full flex flex-col justify-between">
+    <div>
+      <img
+        src={coverImage || "/img/default-blog.jpg"}
+        alt={name}
+        className="h-40 w-full object-cover rounded-lg"
+      />
+      <h3 className="text-md font-semibold mt-4">{name || "Untitled Product"}</h3>
+      <p className="text-sm text-gray-600 mt-2 line-clamp-2">
+        {description
+          ? description.replace(/<[^>]+>/g, "").slice(0, 100) + "..."
+          : "No description available."}
+      </p>
+      <div className="mt-4">
+        <span className="text-[#283850] font-bold text-lg">₹{salePrice}</span>
+      </div>
+    </div>
+
+    {/* Bottom aligned button */}
+    <div className="mt-4">
+      <button className="border border-[#283850] text-[#283850] px-4 py-1 rounded hover:bg-[#c7d3e3] transition text-sm w-full">
+        View details
+      </button>
+    </div>
+  </Link>
+</motion.div>
+
+        ))}
     </div>
   </div>
 </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section className=" py-24 px-2">
+  <div className="w-full max-w-7xl mx-auto bg-gray-50 rounded-xl shadow-md p-8">
+    <div className="flex justify-between items-center border-b pb-4">
+      <h2 className="text-2xl font-semibold text-[rgb(0,72,130)]">Latest Blogs</h2>
+      <Link to="/blogs" className="text-[#283850] text-sm hover:underline">View all</Link>
+    </div>
+    <div className="mx-auto mt-20 grid max-w-7xl grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
+  {blogs
+    .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+    .slice(0, 4)
+    .map(({ _id, title, coverimage, description }, index) => (
+      <motion.div
+  key={_id}
+  initial={{ opacity: 0, y: 50 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5, delay: index * 0.1 }}
+  viewport={{ once: true, amount: 0.2 }}
+>
+  <Link to={`/blog/${_id}`}>
+    <Card className="shadow-md rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer flex flex-col h-full">
+      <div className="p-4 pb-0">
+        <img
+          src={coverimage || "/img/default-blog.jpg"}
+          alt={title}
+          className="h-40 w-full object-cover rounded-md"
+        />
+      </div>
+
+      <CardBody className="p-4 flex flex-col justify-between flex-grow">
+        <div>
+          <Typography variant="h5" className="font-bold mb-2 line-clamp-2">
+            {title || "Untitled Blog"}
+          </Typography>
+          <Typography className="text-blue-gray-500 text-sm line-clamp-3">
+            {description
+              ? description.replace(/<[^>]+>/g, "").slice(0, 120) + "..."
+              : "No description available."}
+          </Typography>
+        </div>
+
+        {/* Button aligned at bottom */}
+        <div className="mt-4">
+          <button className="border border-[#283850] text-[#283850] px-4 py-1 rounded hover:bg-[#c7d3e3]  transition text-sm w-full">
+            View more
+          </button>
+        </div>
+      </CardBody>
+    </Card>
+  </Link>
+</motion.div>
+
+    ))}
+</div>
+
 
 
 

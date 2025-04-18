@@ -63,9 +63,9 @@ export function Description() {
 
   return (
     <>
-      <section className="relative block h-[12vh]">
-        <div className="absolute top-0 h-full w-full bg-[url('/img/thr.jpg')] bg-cover bg-center scale-105" />
-        <div className="absolute top-0 h-full w-full bg-black/60" />
+      <section className="relative block h-[10vh]">
+        <div className="absolute top-0 h-full w-full bg-[#283850] bg-cover bg-center scale-105" />
+        <div className="absolute top-0 h-full w-full bg-[#283850]" />
       </section>
 
       <section className="relative bg-white py-16">

@@ -1,27 +1,27 @@
 import {
-  BriefcaseIcon,
-  ChartBarIcon,
-  PlayIcon,
+  UserGroupIcon,
+  GlobeAltIcon,
+  LightBulbIcon,
 } from "@heroicons/react/24/solid";
 
 export const contactData = [
   {
-    title: "Excelent Services",
-    icon: BriefcaseIcon,
+    title: "Empowering Business Leaders",
+    icon: UserGroupIcon,
     description:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
+      "Gain access to premium services designed to support CEOs — from mentorship and market insights to operational tools and expert consultations.",
   },
   {
-    title: "Grow Your Market",
-    icon: ChartBarIcon,
+    title: "Expand Your Reach",
+    icon: GlobeAltIcon,
     description:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
+      "Tap into a powerful network of industry leaders and partners to explore new markets, build strategic alliances, and scale your business faster.",
   },
   {
-    title: "Launch Time",
-    icon: PlayIcon,
+    title: "Turn Ideas into Impact",
+    icon: LightBulbIcon,
     description:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
+      "Accelerate your projects and initiatives with the support of a vibrant CEO community, funding opportunities, and strategic resources tailored for business leaders.",
   },
 ];
 

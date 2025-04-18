@@ -48,19 +48,19 @@ export const featuresData = async () => {
         color: "gray",
         title: "Total CEO's",
         icon: UserGroupIcon,
-        description: `Total registered users: ${usersRes.data.data}`,
+        description: `+${usersRes.data.data}`,
       },
       {
         color: "gray",
         title: "Total Products",
         icon:  CubeIcon,
-        description: `Total products listed: ${productsRes.data.data}`,
+        description: `+${productsRes.data.data}`,
       },
       {
         color: "gray",
         title: "Total Blogs",
         icon: DocumentTextIcon,
-        description: `Total  blogs: ${blogsRes.data.data}`,
+        description: `+${blogsRes.data.data}`,
       },
     ];
   } catch (error) {

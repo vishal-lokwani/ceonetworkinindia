@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import Select from "react-select"; 
+import { Edit, Trash2 } from "lucide-react";
+import { FaUser, FaBoxOpen } from "react-icons/fa";
 export function MYPRODUCTS() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -13,6 +15,7 @@ export function MYPRODUCTS() {
   const [categories, setCategories] = useState([]);
   const [productToDelete, setProductToDelete] = useState(null); // for delete modal
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // for delete modal
+  
   const [formData, setFormData] = useState({
     name: "",
     type: "",
@@ -45,6 +48,7 @@ console.log('ceo',ceoId)
       try {
         const res = await axios.get(`${API_URL}categories`);
         setCategories(res.data.data);
+        console.log('cat',res.data.data)
       } catch (err) {
         console.error("Error fetching categories:", err);
       }
@@ -85,21 +89,35 @@ console.log('ceo',ceoId)
     setIsModalOpen(true);
   };
 
-  const openEditModal = (product) => {
-    setSelectedProduct(product);
-    setFormData({
-      name: product.name || "",
-      type: product.type || "",
-      salePrice: product.salePrice || "",
-      regularPrice: product.regularPrice || "",
-      description: product.description.replace(/<[^>]+>/g, "") || "",
-      shortdescription: product.shortdescription.replace(/<[^>]+>/g, "") || "",
-      categories: product.categories || [],
-      images: product.images || [],
-      coverImage: product.coverImage || "",
-    });
-    setIsModalOpen(true);
+  const openEditModal = async (productId) => {
+    console.log('productid',productId)
+    try {
+      // Make the API call to fetch the product details by productId
+      const response = await axios.get(`${API_URL}product/${productId}`);
+      console.log('productdata',response.data.data)
+      const product = response.data.data;
+  
+      setSelectedProduct(product); // Set the product data
+      setFormData({
+        name: product.name || "",
+        type: product.type || "",
+        salePrice: product.salePrice || "",
+        regularPrice: product.regularPrice || "",
+        description: product.description ? product.description.replace(/<[^>]+>/g, "") : "",
+        shortdescription: product.shortdescription ? product.shortdescription.replace(/<[^>]+>/g, "") : "",
+        categories: product.categories || [],
+        images: product.images || [],
+        coverImage: product.coverImage || "",
+      });
+  
+      setIsModalOpen(true); // Open the modal
+    } catch (error) {
+      console.error("Error fetching product:", error);
+    }
   };
+  
+  
+  
 
   const handleImagesChange = async (e) => {
     const files = Array.from(e.target.files);
@@ -118,6 +136,7 @@ console.log('ceo',ceoId)
   };
   const fetchProductsByCeoId = async () => {
     try {
+      console.log('hii');
       const userData = JSON.parse(localStorage.getItem("user"));
       const ceoId = userData.ceo._id;
   
@@ -153,7 +172,6 @@ console.log('ceo',ceoId)
       if (selectedProduct) {
         // Update an existing product
         await axios.put(`${API_URL}product/${selectedProduct._id}`, formData);
-        console.log('hii')
         const updatedProducts = products.map((p) =>
           p._id === selectedProduct._id ? { ...p, ...formData } : p
         );
@@ -167,15 +185,19 @@ console.log('ceo',ceoId)
           ...formData,
           ceoId,
         });
-        
-        // Add the new product to the local state without refetching everything
-        setProducts(prevProducts => [...prevProducts, response.data]);
+        console.log('addd', response.data);
+  
+        // Re-fetch products after adding
+        fetchProductsByCeoId();  // Re-fetch products to get the latest list
+  
         setIsModalOpen(false);
       }
     } catch (error) {
       console.error("Error saving product:", error);
     }
   };
+  
+  
   
   
 
@@ -189,34 +211,41 @@ console.log('ceo',ceoId)
 
   return (
     <>
-      <section className="relative block h-[12vh]">
-        <div className="absolute top-0 h-full w-full bg-[url('/img/thr.jpg')] bg-cover bg-center scale-105" />
-        <div className="absolute top-0 h-full w-full bg-black/60" />
+      <section className="relative block h-[10vh]">
+        <div className="absolute top-0 h-full w-full bg-[#283850] bg-cover bg-center scale-105" />
+        <div className="absolute top-0 h-full w-full bg-[#283850]" />
       </section>
 
       <section className="relative bg-white py-16">
         <div className="container mx-auto px-4">
-          <div className="flex gap-8">
-            <div className="w-1/4 bg-white p-4 shadow-lg rounded-lg">
-              <div className="space-y-6">
-                <Button
-                  onClick={() => navigate("/account")}
-                  fullWidth
-                  className="bg-black text-white"
-                >
-                  My Profile
-                </Button>
-                <Button
-                  onClick={() => navigate("/myproducts")}
-                  fullWidth
-                  className="bg-black text-white"
-                >
-                  My Products
-                </Button>
-              </div>
-            </div>
+          
+          <div className="flex items-center gap-6 px-6 py-4 text-black bg-white border-b">
+  <button
+    onClick={() => navigate("/account")}
+    className={`flex items-center gap-2 px-3 py-1 rounded-md font-medium transition ${
+      location.pathname === "/account"
+        ? "bg-[#283850] text-white"
+        : "hover:bg-gray-100 text-gray-700"
+    }`}
+  >
+    <FaUser />
+    My Profile
+  </button>
 
-            <div className="w-3/4 bg-white p-6 shadow-lg rounded-lg">
+  <button
+    onClick={() => navigate("/myproducts")}
+    className={`flex items-center gap-2 px-3 py-1 rounded-md font-medium transition ${
+      location.pathname === "/myproducts"
+        ? "bg-[#283850] text-white"
+        : "hover:bg-gray-100 text-gray-700"
+    }`}
+  >
+    <FaBoxOpen />
+    My Products
+  </button>
+</div>
+
+            <div className="w-full bg-white p-6 shadow-lg rounded-lg">
               <div className="flex justify-between items-center mb-6">
                 <Typography variant="h5" className="font-semibold">
                   My Products
@@ -230,51 +259,63 @@ console.log('ceo',ceoId)
               </div>
 
               {products.length === 0 ? (
-                <p className="text-gray-500">No products found.</p>
-              ) : (
-                <div className="space-y-4">
-                  {products.map((product) => (
-                    <div
-                      key={product._id}
-                      className="flex items-center gap-6 border p-4 rounded-lg shadow hover:shadow-md transition"
-                    >
-                      <img
-                        src={
-                          Array.isArray(product.images) &&
-                          product.images.length > 0
-                            ? product.images[0]
-                            : "/img/placeholder.png"
-                        }
-                        alt={product.name}
-                        className="w-24 h-24 object-cover rounded"
-                      />
-                      <div className="flex-1">
-                        <Typography variant="h6">{product.name}</Typography>
-                        <p className="text-gray-600">
-  {product.description ? product.description.replace(/<[^>]+>/g, "") : "No description available"}
-</p>
+  <p className="text-gray-500">No products found.</p>
+) : (
+  <div className="space-y-4">
+  {products.map((product) => (
+  <div
+    key={product._id}
+    className="flex items-center gap-6 border p-6 rounded-lg shadow hover:shadow-md transition"
+  >
+    <img
+      src={
+        Array.isArray(product.images) && product.images.length > 0
+          ? product.images[0]
+          : "/img/placeholder.png"
+      }
+      alt={product.name}
+      className="w-32 h-32 object-cover rounded"
+    />
+    <div className="flex-1">
+      <h2 className="font-semibold text-xl">{product.name}</h2>
+      <p className="text-gray-600 text-sm">
+        {product.description
+          ? product.description.replace(/<[^>]+>/g, "")
+          : "No description available"}
+      </p>
 
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          onClick={() => openEditModal(product)}
-                          className="bg-blue-500 text-white"
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          onClick={() => { setProductToDelete(product); setIsDeleteModalOpen(true); }}
-                          className="bg-red-500 text-white"
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+      <div className="mt-4 flex items-center gap-4">
+        <div className="text-lg font-medium text-gray-800">
+          Sale Price: <span className="text-green-500">{product.salePrice} Rs.</span>
+        </div>
+        <div className="text-sm text-gray-400 line-through">
+          Regular Price: {product.regularPrice} Rs.
+        </div>
+      </div>
+    </div>
+
+    <div className="flex gap-4">
+      <Edit
+        className="text-blue-500 cursor-pointer hover:scale-110 transition"
+        onClick={() => openEditModal(product._id)} // Pass product ID here
+        size={24}
+      />
+      <Trash2
+        className="text-red-500 cursor-pointer hover:scale-110 transition"
+        onClick={() => {
+          setProductToDelete(product);
+          setIsDeleteModalOpen(true);
+        }}
+        size={24}
+      />
+    </div>
+  </div>
+))}
+
+  </div>
+)}
             </div>
-          </div>
+          
         </div>
       </section>
 
@@ -333,18 +374,19 @@ console.log('ceo',ceoId)
   <label className="block text-black dark:text-white mb-2 uppercase">
     Categories
   </label>
-  <Select
+<Select
   isMulti
-  options={categories.map((cat) => ({ value: cat._id, label: cat.name }))}
+  options={categories.map((cat) => ({ value: cat._id, label: cat.name }))} // Display category name and store _id
   value={formData.categories.map((catId) => {
-    const matched = categories.find((c) => c._id === catId);
+    const matched = categories.find((c) => c._id === catId);  // Find matching category by _id
     return matched ? { value: matched._id, label: matched.name } : null;
-  }).filter(Boolean)}
+  }).filter(Boolean)} // Map selected categories to the appropriate format
   onChange={(selectedOptions) => {
-    const selectedValues = selectedOptions.map((opt) => opt.value);
-    setFormData({ ...formData, categories: selectedValues });
+    const selectedValues = selectedOptions.map((opt) => opt.value); // Store selected category _ids
+    setFormData({ ...formData, categories: selectedValues }); // Update the form data with selected category _ids
   }}
 />
+
 
 </div>
 
