@@ -62,10 +62,11 @@ export function People() {
                   key={ceo._id}
                   onClick={() => handleCardClick(ceo._id)}
                   className="relative backdrop-blur-md bg-white/60 border border-gray-200 rounded-3xl   p-6 flex flex-col items-center text-center cursor-pointer"
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, ease: "easeOut" }}
-                  whileHover={{ scale: 1.03 }}
+                  
+                      initial={{ opacity: 0, y: 100 }} // Start from below
+  whileInView={{ opacity: 1, y: 0 }} // Animate to its normal position
+  transition={{ duration: 0.6, ease: "easeOut" }}
+  viewport={{ once: true, amount: "top" }}
                 >
                   <div className="relative">
                     <img

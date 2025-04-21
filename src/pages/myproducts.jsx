@@ -15,7 +15,7 @@ export function MYPRODUCTS() {
   const [categories, setCategories] = useState([]);
   const [productToDelete, setProductToDelete] = useState(null); // for delete modal
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // for delete modal
-  
+  const [selectedValues, setSelectedValues] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     type: "",
@@ -94,7 +94,10 @@ console.log('ceo',ceoId)
     try {
       // Make the API call to fetch the product details by productId
       const response = await axios.get(`${API_URL}product/${productId}`);
-      console.log('productdata',response.data.data)
+      const selectedCategoryData = response.data.data.categories;
+      console.log('productdata',response.data.data.categories)
+      
+      setSelectedValues()
       const product = response.data.data;
   
       setSelectedProduct(product); // Set the product data
@@ -345,48 +348,89 @@ console.log('ceo',ceoId)
             </Typography>
 
             {/* Inputs */}
-            {["name", "type", "salePrice", "regularPrice", "shortdescription", "description"].map((field) => (
-              <div className="mb-4" key={field}>
-                <label className="block text-black dark:text-white mb-2 uppercase">
-                  {field.replace(/([A-Z])/g, " $1").toUpperCase()}
-                </label>
-                {field.includes("description") ? (
-                  <textarea
-                    placeholder={field}
-                    value={formData[field]}
-                    onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
-                    className="border w-full p-2 rounded h-20"
-                  />
-                ) : (
-                  <input
-                    type={field.toLowerCase().includes("price") ? "number" : "text"}
-                    placeholder={field}
-                    value={formData[field]}
-                    onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
-                    className="border w-full p-2 rounded"
-                  />
-                )}
-              </div>
-            ))}
+            <div className="mb-4">
+  <label className="block text-black dark:text-white mb-2 uppercase">NAME</label>
+  <input
+    type="text"
+    placeholder="Name"
+    value={formData.name}
+    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+    className="border w-full p-2 rounded"
+  />
+</div>
+
+<div className="mb-4">
+  <label className="block text-black dark:text-white mb-2 uppercase">TYPE</label>
+  <input
+    type="text"
+    placeholder="Type"
+    value={formData.type}
+    onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+    className="border w-full p-2 rounded"
+  />
+</div>
+
+<div className="mb-4">
+  <label className="block text-black dark:text-white mb-2 uppercase">SALE PRICE</label>
+  <input
+    type="number"
+    placeholder="Sale Price"
+    value={formData.salePrice}
+    onChange={(e) => setFormData({ ...formData, salePrice: e.target.value })}
+    className="border w-full p-2 rounded"
+  />
+</div>
+
+<div className="mb-4">
+  <label className="block text-black dark:text-white mb-2 uppercase">REGULAR PRICE</label>
+  <input
+    type="number"
+    placeholder="Regular Price"
+    value={formData.regularPrice}
+    onChange={(e) => setFormData({ ...formData, regularPrice: e.target.value })}
+    className="border w-full p-2 rounded"
+  />
+</div>
+
+<div className="mb-4">
+  <label className="block text-black dark:text-white mb-2 uppercase">SHORT DESCRIPTION</label>
+  <textarea
+    placeholder="Short Description"
+    value={formData.shortdescription}
+    onChange={(e) => setFormData({ ...formData, shortdescription: e.target.value })}
+    className="border w-full p-2 rounded h-20"
+  />
+</div>
+
+<div className="mb-4">
+  <label className="block text-black dark:text-white mb-2 uppercase">DESCRIPTION</label>
+  <textarea
+    placeholder="Description"
+    value={formData.description}
+    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+    className="border w-full p-2 rounded h-20"
+  />
+</div>
+
             
             {/* Categories */}
             <div className="mb-4">
   <label className="block text-black dark:text-white mb-2 uppercase">
     Categories
   </label>
-<Select
+  <Select
   isMulti
-  options={categories.map((cat) => ({ value: cat._id, label: cat.name }))} // Display category name and store _id
-  value={formData.categories.map((catId) => {
-    const matched = categories.find((c) => c._id === catId);  // Find matching category by _id
+  options={categories.map((cat) => ({ value: cat._id, label: cat.name }))}
+  value={formData.categories.map((catItem) => {
+    const catId = typeof catItem === 'object' ? catItem._id : catItem;
+    const matched = categories.find((c) => c._id === catId);
     return matched ? { value: matched._id, label: matched.name } : null;
-  }).filter(Boolean)} // Map selected categories to the appropriate format
+  }).filter(Boolean)}
   onChange={(selectedOptions) => {
-    const selectedValues = selectedOptions.map((opt) => opt.value); // Store selected category _ids
-    setFormData({ ...formData, categories: selectedValues }); // Update the form data with selected category _ids
+    const selectedValues = selectedOptions.map((opt) => opt.value);
+    setFormData({ ...formData, categories: selectedValues });
   }}
 />
-
 
 </div>
 

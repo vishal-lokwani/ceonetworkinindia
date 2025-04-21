@@ -15,7 +15,9 @@ export function Blogs() {
   const [showAllCategories, setShowAllCategories] = useState(false);
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   // Fetch Blogs
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -149,10 +151,11 @@ export function Blogs() {
                       key={blog._id}
                       onClick={() => navigate(`/blog/${blog._id}`)}
                       className="cursor-pointer group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-5 border border-gray-100 hover:border-[#283850]"
-                      initial={{ opacity: 0, y: 100 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, ease: "easeOut" }}
-                      viewport={{ once: true, amount: "top" }}
+                      
+                      initial={{ opacity: 0, y: 100 }} // Start from below
+  whileInView={{ opacity: 1, y: 0 }} // Animate to its normal position
+  transition={{ duration: 0.6, ease: "easeOut" }}
+  viewport={{ once: true, amount: "top" }}
                     >
                       <div className="overflow-hidden rounded-xl">
                         <img
