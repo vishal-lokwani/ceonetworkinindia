@@ -138,6 +138,25 @@ desktopBanner
 })` }}
 /> */}
 <div className="absolute top-0 h-[85%] w-full bg-cover bg-center">
+  {homepageData.desktopBanner && homepageData.desktopBanner.endsWith(".mp4") ? (
+    // If the URL ends with .mp4, treat it as a video
+    <video
+      className="absolute top-0 left-0 w-full h-full object-cover"
+      autoPlay
+      loop
+      muted
+    >
+      <source src={homepageData.desktopBanner} type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  ) : (
+    // If it's not a video (it's an image URL), use the image as the background
+    <div className="absolute top-0 w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${homepageData.desktopBanner})` }} />
+  )}
+</div>
+
+
+{/* <div className="absolute top-0 h-[85%] w-full bg-cover bg-center">
   <iframe
     className="w-full h-full object-cover z-0"
     src="https://www.youtube.com/embed/gXFATcwrO-U?autoplay=1&loop=1&mute=1&playlist=gXFATcwrO-U&controls=0&modestbranding=1&rel=0&showinfo=0"
@@ -145,7 +164,7 @@ desktopBanner
     allow="autoplay; fullscreen"
     allowFullScreen
   ></iframe>
-</div>
+</div> */}
 
 
 
