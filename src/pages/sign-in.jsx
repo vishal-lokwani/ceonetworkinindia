@@ -12,15 +12,30 @@ import "react-toastify/dist/ReactToastify.css";
 import { Footer } from "@/widgets/layout";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
-import { Visibility, VisibilityOff } from "@mui/icons-material"; // Import the eye icons
-
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { LinkedIn, useLinkedIn } from "react-linkedin-login-oauth2";
+import linkedin from 'react-linkedin-login-oauth2/assets/linkedin.png';
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+  const [showPassword, setShowPassword] = useState(false);
   const [showPasswordChecks, setShowPasswordChecks] = useState(false);
-
+ const { linkedInLogin } = useLinkedIn({
+    clientId: "78aqnlu5ygf64h",
+    redirectUri: `${window.location.origin}/linkedin`,
+    onSuccess: (code) => {
+      console.log(code);
+      setCode(code);
+      setErrorMessage("");
+    },
+    scope: "r_emailaddress r_liteprofile",
+    onError: (error) => {
+      console.log(error);
+      setCode("");
+      setErrorMessage(error.errorMessage);
+    },
+  });
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -41,7 +56,6 @@ export function SignIn() {
         toast.success("Login successful");
         localStorage.setItem("token", res.data.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.data));
-
         setTimeout(() => {
           navigate("/home");
         }, 1500);
@@ -65,24 +79,32 @@ export function SignIn() {
         toast.success("Google Login Successful!");
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify({ ceo: res.data.data, token: res.data.token }));
-
         navigate("/home");
       }
     } catch (error) {
-      console.error("Google login error", error);
       toast.error("Google login failed");
+    }
+  };
+
+  const handleLinkedInSuccess = async (code) => {
+    try {
+      const res = await axios.post(`${API_URL}ceo/linkedin-login`, { code });
+      if (res.data.success) {
+        toast.success("LinkedIn Login Successful!");
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify({ ceo: res.data.data, token: res.data.token }));
+        navigate("/home");
+      }
+    } catch (error) {
+      console.error("LinkedIn login error", error);
+      toast.error("LinkedIn login failed");
     }
   };
 
   return (
     <>
-       <section className="relative block h-[10vh]">
+      <section className="relative block h-[10vh]">
         <div className="absolute top-0 h-full w-full bg-[#283850] bg-cover bg-center scale-105" />
-        <div className="absolute top-0 h-full w-full bg-[#283850]flex items-center justify-center">
-          {/* <Typography variant="h2" color="white" className="text-4xl font-bold">
-            Discover Our Products
-          </Typography> */}
-        </div>
       </section>
 
       <section className="m-8 flex gap-4">
@@ -110,7 +132,6 @@ export function SignIn() {
               <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
                 Password
               </Typography>
-              {/* Wrapper div for the password input and eye icon */}
               <div className="relative">
                 <Input
                   type={showPassword ? "text" : "password"}
@@ -121,7 +142,6 @@ export function SignIn() {
                     const val = e.target.value;
                     setPassword(val);
                     setShowPasswordChecks(true);
-
                     let errorMsg = "";
                     if (val.length < 6) errorMsg = "Password must be at least 6 characters.";
                     else if (!/[A-Z]/.test(val)) errorMsg = "Must contain an uppercase letter.";
@@ -132,7 +152,6 @@ export function SignIn() {
                       errorMsg = "";
                       setShowPasswordChecks(false);
                     }
-
                     setPasswordError(errorMsg);
                   }}
                   className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -209,6 +228,19 @@ export function SignIn() {
                 onSuccess={handleGoogleSuccess}
                 onError={() => toast.error("Google login failed")}
               />
+         <div>
+
+ <img
+        onClick={linkedInLogin}
+        src={linkedin}
+        alt="Log in with Linked In"
+        style={{ maxWidth: "180px", cursor: "pointer" }}
+      />
+
+
+
+</div>
+
             </div>
 
             <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
